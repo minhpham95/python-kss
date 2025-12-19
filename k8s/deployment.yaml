@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-kss
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-kss
+  template:
+    metadata:
+      labels:
+        app: python-kss
+    spec:
+      containers:
+      - name: python-kss
+        image: plminha13/python-kss:latest
+        ports:
+        - containerPort: 5000
