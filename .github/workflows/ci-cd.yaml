@@ -108,11 +108,22 @@ jobs:
         # kubectl apply -f k8s/deployment.yaml
         # kubectl apply -f k8s/service.yaml
 
+        # kubectl config use-context docker-desktop
+        # kubectl set image deployment/python-kss \
+        #   python-app=plminha13/python-kss:${{ github.sha }} || true
+        # kubectl apply -f k8s/deployment.yaml
+        # kubectl apply -f k8s/service.yaml
+
+        set -e
         kubectl config use-context docker-desktop
-        kubectl set image deployment/python-app \
-          python-app=plminha13/python-kss:${{ github.sha }} || true
+
+        echo "Apply manifests"
         kubectl apply -f k8s/deployment.yaml
         kubectl apply -f k8s/service.yaml
 
+        echo "Update image"
+        kubectl set image deployment/python-kss \
+          python-app=plminha13/python-kss:${{ github.sha }}
+
     - name: Verify rollout
-      run: kubectl rollout status deployment/python-app
+      run: kubectl rollout status deployment/python-kss
