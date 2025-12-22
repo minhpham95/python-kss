@@ -119,8 +119,8 @@ jobs:
         kubectl config use-context docker-desktop
 
         echo "Apply manifests"
-        kubectl apply -f python-kss/k8s/deployment.yaml
-        kubectl apply -f python-kss/k8s/service.yaml
+        kubectl apply -f k8s/deployment.yaml
+        kubectl apply -f k8s/service.yaml
 
         echo "Update image"
         kubectl set image deployment/python-kss \
