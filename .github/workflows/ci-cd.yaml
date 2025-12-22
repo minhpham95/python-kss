@@ -127,4 +127,7 @@ jobs:
           python-kss=plminha13/python-kss:${{ github.sha }}
 
     - name: Verify rollout
-      run: kubectl rollout status deployment/python-kss
+      shell: bash
+      # run: kubectl rollout status deployment/python-kss
+      run: |
+        kubectl rollout status deployment/python-kss --timeout=120s
