@@ -102,10 +102,16 @@ jobs:
     #     kubectl apply -f kubernetes/deployment.yaml
     #     kubectl apply -f kubernetes/service.yaml
 
-    - name: Use Docker Desktop context
-      shell: bash
+    # Docker desktop
+    # - name: Use Docker Desktop context
+    #   shell: bash
+    #   run: |
+    #     kubectl config use-context docker-desktop
+
+    - name: Set up K3s Kubeconfig
       run: |
-        kubectl config use-context docker-desktop
+        echo "${{ secrets.K3S_KUBECONFIG }}" > ~/.kube/config
+        kubectl config use-context default
 
     - name: Wait for Kubernetes API
       shell: bash
@@ -120,28 +126,39 @@ jobs:
           sleep 5
         done
 
-    - name: Deploy to Kubernetes
-      shell: bash
+    # Deploy with Docker desktop
+    # - name: Deploy to Kubernetes
+    #   shell: bash
+    #   run: |
+    #     # kubectl config use-context docker-desktop
+    #     # kubectl apply -f k8s/deployment.yaml
+    #     # kubectl apply -f k8s/service.yaml
+
+    #     # kubectl config use-context docker-desktop
+    #     # kubectl set image deployment/python-kss \
+    #     #   python-app=plminha13/python-kss:${{ github.sha }} || true
+    #     # kubectl apply -f k8s/deployment.yaml
+    #     # kubectl apply -f k8s/service.yaml
+
+    #     set -e
+    #     # kubectl config use-context docker-desktop
+
+    #     echo "Apply manifests"
+    #     kubectl apply -f k8s/deployment.yaml
+    #     kubectl apply -f k8s/service.yaml
+    #     kubectl apply -f k8s/ingress.yaml
+
+    #     echo "Update image"
+    #     kubectl set image deployment/python-kss \
+    #       python-kss=plminha13/python-kss:${{ github.sha }}
+
+    - name: Deploy to K3s Kubernetes
       run: |
-        # kubectl config use-context docker-desktop
-        # kubectl apply -f k8s/deployment.yaml
-        # kubectl apply -f k8s/service.yaml
-
-        # kubectl config use-context docker-desktop
-        # kubectl set image deployment/python-kss \
-        #   python-app=plminha13/python-kss:${{ github.sha }} || true
-        # kubectl apply -f k8s/deployment.yaml
-        # kubectl apply -f k8s/service.yaml
-
         set -e
-        # kubectl config use-context docker-desktop
-
-        echo "Apply manifests"
         kubectl apply -f k8s/deployment.yaml
         kubectl apply -f k8s/service.yaml
         kubectl apply -f k8s/ingress.yaml
 
-        echo "Update image"
         kubectl set image deployment/python-kss \
           python-kss=plminha13/python-kss:${{ github.sha }}
 
