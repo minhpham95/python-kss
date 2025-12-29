@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: python-kss-ingress
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   rules:
     - host: python-kss.localhost
       http:
