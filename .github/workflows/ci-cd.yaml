@@ -171,6 +171,12 @@ jobs:
       run: |
         kubectl rollout status deployment/python-kss --timeout=120s
 
-    - name: Print access URL
+    # - name: Print access URL
+    #   run: |
+    #     echo "Your Python app is now accessible at: http://127.0.0.1:31102"
+
+    - name: Expose app on localhost
       run: |
-        echo "Your Python app is now accessible at: http://127.0.0.1:31102"
+        nohup kubectl port-forward svc/python-kss 5000:5000 > /tmp/port-forward.log 2>&1 &
+        sleep 3
+        echo "App available at http://localhost:5000"
