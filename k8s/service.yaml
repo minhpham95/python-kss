@@ -3,10 +3,11 @@ kind: Service
 metadata:
   name: python-kss
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: python-kss
   ports:
   - port: 5000
     targetPort: 5000
     # nodePort: 30007
+    nodePort: 31102

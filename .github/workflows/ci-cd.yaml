@@ -160,6 +160,8 @@ jobs:
         kubectl apply -f k8s/service.yaml
         kubectl apply -f k8s/ingress.yaml
 
+        kubectl patch svc python-kss -p '{"spec":{"type":"NodePort","ports":[{"port":5000,"targetPort":5000,"nodePort":31102}]}}'
+
         kubectl set image deployment/python-kss \
           python-kss=plminha13/python-kss:${{ github.sha }}
 
@@ -168,3 +170,7 @@ jobs:
       # run: kubectl rollout status deployment/python-kss
       run: |
         kubectl rollout status deployment/python-kss --timeout=120s
+
+    - name: Print access URL
+      run: |
+        echo "Your Python app is now accessible at: http://127.0.0.1:31102"
